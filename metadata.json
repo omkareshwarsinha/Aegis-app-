@@ -1,0 +1,6 @@
+{
+  "name": "Aegis Assistant",
+  "description": "Siri-like AI assistant with quick actions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
