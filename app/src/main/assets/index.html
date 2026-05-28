@@ -1,1 +1,2063 @@
-[...PASTE OF YOUR PROVIDED HTML HERE...]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aegis Assistant</title>
+    <!-- M3 styles and high-tech aesthetics -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg0: #0a0714;
+            --bg1: #100c20;
+            --bg2: #181030;
+            --bg3: #221840;
+            --glass: rgba(22, 14, 44, 0.82);
+            --glass-b: rgba(255, 255, 255, 0.07);
+            --p: #9b6dff;
+            --p2: #7c3aff;
+            --p-glow: rgba(155, 109, 255, 0.28);
+            --txt: #f0ecff;
+            --txt2: #a89dc8;
+            --txt3: #6b5f8a;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --red: #f87171;
+            --amber: #fbbf24;
+            --grad: linear-gradient(135deg, #9b6dff, #4f8ef7);
+            --ease: cubic-bezier(.4, 0, .2, 1);
+            --norm: all .28s var(--ease);
+            --sidebar-w: 260px;
+            --header-h: 64px;
+        }
+
+        /* Ocean Breeze Theme */
+        .theme-ocean {
+            --bg0: #020f18; --bg1: #041824; --bg2: #072535; --bg3: #0d3548;
+            --glass: rgba(4, 24, 36, 0.88); --glass-b: rgba(34, 211, 238, 0.1);
+            --p: #22d3ee; --p2: #06b6d4; --p-glow: rgba(34, 211, 238, 0.28);
+            --txt: #d0f7ff; --txt2: #7dd3e8; --txt3: #3a8fa8;
+            --grad: linear-gradient(135deg, #22d3ee, #3b82f6);
+        }
+
+        /* Midnight Gold Theme */
+        .theme-midnight {
+            --bg0: #0a0800; --bg1: #141000; --bg2: #1e1800; --bg3: #2a2300;
+            --glass: rgba(20, 16, 0, 0.88); --glass-b: rgba(251, 191, 36, 0.1);
+            --p: #fbbf24; --p2: #f59e0b; --p-glow: rgba(251, 191, 36, 0.28);
+            --txt: #fff9e6; --txt2: #d4b56a; --txt3: #8a7040;
+            --grad: linear-gradient(135deg, #fbbf24, #f97316);
+        }
+
+        /* Forest Ninja Theme */
+        .theme-forest {
+            --bg0: #010a04; --bg1: #041408; --bg2: #081f0f; --bg3: #0d2d16;
+            --glass: rgba(4, 20, 8, 0.88); --glass-b: rgba(52, 211, 153, 0.1);
+            --p: #34d399; --p2: #10b981; --p-glow: rgba(52, 211, 153, 0.28);
+            --txt: #d0ffe8; --txt2: #6ee7b7; --txt3: #2d8a60;
+            --grad: linear-gradient(135deg, #34d399, #22d3ee);
+        }
+
+        /* Rose Blaze Theme */
+        .theme-rose {
+            --bg0: #120009; --bg1: #1e000f; --bg2: #2d0018; --bg3: #3e0024;
+            --glass: rgba(30, 0, 15, 0.88); --glass-b: rgba(244, 114, 182, 0.1);
+            --p: #f472b6; --p2: #ec4899; --p-glow: rgba(244, 114, 182, 0.28);
+            --txt: #ffe0ef; --txt2: #f9a8d4; --txt3: #be4a7d;
+            --grad: linear-gradient(135deg, #f472b6, #c084fc);
+        }
+
+        /* Reset and Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg0);
+            color: var(--txt);
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Background Effects */
+        #bgFx {
+            position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background: radial-gradient(circle at 15% 25%, rgba(155, 109, 255, 0.1) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 75%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                        var(--bg0);
+        }
+
+        /* Layout Container */
+        #app { display: flex; min-height: 100vh; position: relative; }
+
+        /* Sidebar Navigation */
+        #sidebar {
+            width: var(--sidebar-w);
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-right: 1px solid var(--glass-b);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0; top: 0; height: 100vh;
+            z-index: 200;
+            transform: translateX(-100%);
+            transition: transform .38s var(--ease);
+        }
+        #sidebar.open { transform: translateX(0); }
+
+        .sb-head {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--glass-b);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sb-avatar {
+            width: 44px; height: 44px;
+            background: var(--grad);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 800; color: #fff;
+            box-shadow: 0 0 16px var(--p-glow);
+        }
+        .sb-name { font-size: 16px; font-weight: 700; color: var(--txt); }
+        .sb-sub { font-size: 11px; color: var(--txt2); }
+
+        .sb-nav { flex: 1; overflow-y: auto; padding: 16px 0; }
+        .nav-grp-title {
+            font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--txt3);
+            padding: 0 20px; margin: 16px 0 8px;
+        }
+        .nav-lnk {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 20px;
+            color: var(--txt2); font-weight: 500; font-size: 13.5px;
+            border-left: 3px solid transparent;
+            transition: var(--norm); cursor: pointer;
+        }
+        .nav-lnk:hover { background: rgba(155, 109, 255, 0.05); color: var(--txt); }
+        .nav-lnk.active {
+            background: rgba(155, 109, 255, 0.1);
+            color: var(--p); border-left-color: var(--p); font-weight: 600;
+        }
+
+        /* Main Content Container */
+        #main {
+            flex: 1;
+            margin-left: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin .38s var(--ease);
+            width: 100%;
+        }
+        #app.sidebar-open #main { margin-left: var(--sidebar-w); }
+
+        /* Header Style */
+        #hdr {
+            height: var(--header-h); padding: 0 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-b);
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 150;
+        }
+        .hdr-l { display: flex; align-items: center; gap: 16px; }
+        .hdr-r { display: flex; align-items: center; gap: 12px; }
+        #menuBtn {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-b);
+            border-radius: 10px; color: var(--txt);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; cursor: pointer; transition: var(--norm);
+        }
+        #menuBtn:hover { background: rgba(255,255,255,0.1); border-color: var(--p); }
+
+        .logo-title { font-size: 18px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .status-pill {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 12px; background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 40px; font-size: 11px; font-weight: 600; color: var(--green);
+        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+        /* Sidebar Overlay */
+        #sidebarOverlay {
+            display: none; position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+        }
+        #sidebarOverlay.show { display: block; }
+
+        /* Assistant Section - Home View */
+        .sec { display: none; padding: 24px; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+        .sec.active { display: flex; }
+
+        /* Siri Holographic Neon Orb */
+        #orbContainer {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px 0; gap: 20px; width: 100%;
+        }
+        .siri-orb-outer {
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(155,109,255,1) 0%, rgba(34,211,238,1) 70%, rgba(244,114,182,0.4) 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 50px rgba(155, 109, 255, 0.4), 0 0 100px rgba(34, 211, 238, 0.2);
+            animation: floatOrb 5s ease-in-out infinite;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+        }
+        .siri-orb-outer::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #22d3ee, #9b6dff, #f472b6, #34d399, #22d3ee);
+            z-index: -1;
+            filter: blur(16px);
+            animation: rotateSiriBg 6s linear infinite;
+            opacity: 0.75;
+            transition: opacity 0.3s ease;
+        }
+        .siri-orb-outer::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(34,211,238,0.7) 0%, rgba(244,114,182,0.4) 60%, transparent 100%);
+            z-index: -2;
+            filter: blur(24px);
+            animation: rotateSiriBgX 4s linear infinite reverse;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+        .siri-orb-inner {
+            width: 110px; height: 110px;
+            background: radial-gradient(circle, #0e0a1e 20%, rgba(155,109,255,0.3) 80%, #9b6dff 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; color: #fff;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+            z-index: 2;
+        }
+
+        /* Voice State Animations */
+        .siri-orb-outer.listening {
+            animation: pulseListening 0.8s ease-in-out infinite alternate;
+            box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), 0 0 120px rgba(155, 109, 255, 0.6);
+            transform: scale(1.15);
+        }
+        .siri-orb-outer.listening::before {
+            animation: rotateSiriBg 2s linear infinite;
+            filter: blur(8px);
+            opacity: 1.0;
+        }
+        .siri-orb-outer.processing {
+            animation: spinProcessing 1.5s linear infinite;
+            box-shadow: 0 0 60px rgba(244, 114, 182, 0.9), 0 0 120px rgba(155, 109, 255, 0.6);
+        }
+        .siri-orb-outer.processing::before {
+            animation: rotateSiriBg 1s linear infinite;
+            opacity: 1.0;
+        }
+        .siri-orb-outer.speaking {
+            animation: speakPulse 0.3s ease-in-out infinite alternate;
+        }
+
+        @keyframes rotateSiriBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateSiriBgX {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes floatOrb {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(10deg); }
+        }
+        @keyframes pulseListening {
+            0%, 100% { transform: scale(1.08); box-shadow: 0 0 60px rgba(34, 211, 238, 0.7); }
+            50% { transform: scale(1.24); box-shadow: 0 0 95px rgba(244, 114, 182, 0.9); }
+        }
+        @keyframes spinProcessing {
+            0% { transform: rotate(0deg) scale(1.05); }
+            100% { transform: rotate(360deg) scale(1.05); }
+        }
+        @keyframes speakPulse {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.18); }
+        }
+
+        /* Siri Fixed Fluid Bottom Wave */
+        #siriBottomWave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: linear-gradient(90deg, #9b6dff, #22d3ee, #f472b6, #22d3ee, #9b6dff);
+            background-size: 400% 100%;
+            display: none;
+            z-index: 1000;
+            filter: blur(4px);
+            box-shadow: 0 -4px 20px rgba(155, 109, 255, 0.8), 0 -2px 40px rgba(34, 211, 238, 0.6);
+            animation: siriMoveBg 3s linear infinite;
+        }
+        #siriBottomWave.active {
+            display: block;
+        }
+        @keyframes siriMoveBg {
+            0% { background-position: 0% 50%; height: 10px; opacity: 0.8; }
+            50% { background-position: 100% 50%; height: 16px; opacity: 1.0; }
+            100% { background-position: 0% 50%; height: 10px; opacity: 0.8; }
+        }
+
+        .orb-status {
+            font-size: 14px; font-weight: 600; color: var(--txt2);
+            text-align: center; margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Voice Waveform Bars */
+        .wave-container {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; height: 40px; margin-top: 8px;
+        }
+        .wave-bar {
+            width: 4px; height: 6px; background: var(--p);
+            border-radius: 4px; transition: height 0.15s ease-out;
+        }
+        .wave-bar.active { background: var(--cyan); }
+
+        /* Siri Voice & Text Keyboard input Bar */
+        .siri-input-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 4px 6px 4px 16px;
+            margin: 16px auto 0;
+            width: 90%;
+            max-width: 320px;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+        }
+        .siri-input-bar:focus-within {
+            background: rgba(22, 14, 44, 0.4);
+            border-color: var(--p);
+            box-shadow: 0 0 18px var(--p-glow), inset 0 1px 1px rgba(255,255,255,0.12);
+            max-width: 335px;
+        }
+        .siri-text-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--txt);
+            font-family: inherit;
+            font-size: 13.5px;
+            padding: 8px 0;
+        }
+        .siri-text-input::placeholder {
+            color: var(--txt3);
+            font-weight: 500;
+        }
+        .siri-send-btn {
+            background: var(--grad);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--norm);
+            font-size: 14px;
+            box-shadow: 0 2px 8px var(--p-glow);
+        }
+        .siri-send-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px var(--p);
+        }
+
+        /* Cards and List Items */
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: 18px;
+            padding: 20px;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+        .section-title { font-size: 16px; font-weight: 700; color: var(--txt); margin-bottom: 12px; }
+
+        /* Chips Grid */
+        .chips-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-b);
+            padding: 8px 16px; border-radius: 20px;
+            font-size: 12px; font-weight: 600; color: var(--txt2);
+            cursor: pointer; transition: var(--norm);
+        }
+        .chip:hover {
+            background: rgba(155, 109, 255, 0.08);
+            border-color: var(--p);
+            color: var(--p);
+            transform: translateY(-2px);
+        }
+
+        /* Grid Lists */
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12dp;
+        }
+        @media(max-width: 480px) {
+            .grid-list { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .action-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px; text-align: center; cursor: pointer; transition: var(--norm);
+        }
+        .action-card:hover { border-color: var(--p); transform: translateY(-4px); box-shadow: 0 8px 24px var(--p-glow); }
+        .action-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            background: var(--bg3); display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--p);
+        }
+        .action-label { font-size: 12px; font-weight: 700; color: var(--txt); }
+
+        /* Form Inputs */
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-label { font-size: 11px; font-weight: 700; color: var(--txt3); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--glass-b);
+            border-radius: 10px; padding: 12px; color: var(--txt);
+            font-size: 13.5px; font-family: inherit; transition: var(--norm);
+            outline: none;
+        }
+        .form-input:focus { border-color: var(--p); background: rgba(0,0,0,0.3); }
+
+        .btn-m3 {
+            background: var(--grad); color: #fff; border: none;
+            padding: 12px 20px; border-radius: 12px;
+            font-size: 13.5px; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            transition: var(--norm); box-shadow: 0 4px 12px var(--p-glow);
+        }
+        .btn-m3:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--p-glow); }
+
+        /* Chat Logs UI */
+        #chatLogs {
+            display: flex; flex-direction: column; gap: 12px; max-height: 240px;
+            overflow-y: auto; padding-right: 6px;
+        }
+        .chat-bubble {
+            max-width: 80%; padding: 10px 14px; border-radius: 16px;
+            font-size: 13px; line-height: 1.4; word-break: break-word;
+        }
+        .chat-bubble.user {
+            align-self: flex-end;
+            background: var(--grad); color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-bubble.aegis {
+            align-self: flex-start;
+            background: var(--bg2);
+            border: 1px solid var(--glass-b);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Sub-app display frame */
+        #subAppFrameContainer {
+            display: none; position: fixed; inset: 0; z-index: 500;
+            background: var(--bg0); flex-direction: column;
+        }
+        #subAppFrameHeader {
+            height: 60px; padding: 0 16px; background: var(--bg1);
+            border-bottom: 1px solid var(--glass-b);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        #subAppIframe { width: 100%; flex: 1; border: none; background: #fff; }
+
+        /* Custom select style */
+        select.form-input { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+        /* Theme Color Picker Row */
+        .theme-picker-row { display: flex; gap: 8px; margin-top: 6px; }
+        .theme-color-op {
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            border: 2px solid transparent; transition: var(--norm);
+        }
+        .theme-color-op.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+
+        /* Custom App Creator Editor */
+        #customAppEditor {
+            font-family: 'JetBrains Mono', monospace;
+            background: #060410 !important;
+            color: #22d3ee !important;
+            resize: vertical; min-height: 180px;
+        }
+
+        /* 15 Puzzle board styling */
+        #puzzleGrid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+            max-width: 260px; margin: 12px auto 0;
+        }
+        .puzzle-piece {
+            aspect-ratio: 1; background: var(--bg3); border: 1px solid var(--glass-b);
+            border-radius: 8px; color: var(--txt); font-weight: 700; font-size: 18px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: var(--norm);
+        }
+        .puzzle-piece:hover { border-color: var(--p); background: rgba(155,109,255,0.1); }
+        .puzzle-piece.empty { background: transparent; border: none; cursor: default; }
+
+    </style>
+</head>
+<body>
+
+    <div id="bgFx"></div>
+
+    <div id="app">
+        <!-- Sidebar overlay for mobile drawer -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar Navigation Drawer -->
+        <aside id="sidebar">
+            <div class="sb-head">
+                <div class="sb-avatar">AE</div>
+                <div>
+                    <div class="sb-name">Aegis AI</div>
+                    <div class="sb-sub">Hyper-Assistant ⚡</div>
+                </div>
+            </div>
+            <nav class="sb-nav">
+                <div class="nav-grp-title">Voice Core</div>
+                <div class="nav-lnk active" data-tab="assistant-tab" onclick="switchTab('assistant-tab')">
+                    <i class="fa-solid fa-microphone-lines"></i> Aegis Voice
+                </div>
+                <div class="nav-lnk" data-tab="subapps-tab" onclick="switchTab('subapps-tab')">
+                    <i class="fa-solid fa-grip"></i> Sub-Apps Drawer
+                </div>
+                <div class="nav-lnk" data-tab="automation-tab" onclick="switchTab('automation-tab')">
+                    <i class="fa-solid fa-bolt"></i> Automation Triggers
+                </div>
+                <div class="nav-lnk" data-tab="allapps-tab" onclick="switchTab('allapps-tab')">
+                    <i class="fa-solid fa-mobile-screen-button"></i> Installed Apps
+                </div>
+                <div class="nav-lnk" data-tab="settings-tab" onclick="switchTab('settings-tab')">
+                    <i class="fa-solid fa-sliders"></i> System Settings
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main">
+            <!-- Header Bar -->
+            <header id="hdr">
+                <div class="hdr-l">
+                    <button id="menuBtn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <div class="logo-title">AEGIS</div>
+                </div>
+                <div class="hdr-r">
+                    <div class="status-pill">
+                        <div class="status-dot"></div>
+                        <span id="connStatus">ONLINE</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ================= ASISTANT TAB (HOME) ================= -->
+            <section id="assistant-tab" class="sec active">
+                <div id="orbContainer">
+                    <div class="siri-orb-outer" id="siriOrb" onclick="toggleListening()">
+                        <div class="siri-orb-inner">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                    </div>
+                    <div class="orb-status" id="assistantStatus">Tap the Orb to Summon Aegis</div>
+                    
+                    <!-- Siri interactive voice-reactive waveform -->
+                    <div class="wave-container" id="waveContainer">
+                        <div class="wave-bar" style="height: 12px"></div>
+                        <div class="wave-bar" style="height: 8px"></div>
+                        <div class="wave-bar" style="height: 16px"></div>
+                        <div class="wave-bar" style="height: 24px"></div>
+                        <div class="wave-bar" style="height: 14px"></div>
+                        <div class="wave-bar" style="height: 8px"></div>
+                    </div>
+
+                    <!-- Siri dynamic keyboard text input entry (Complete Voice + Text Support) -->
+                    <div class="siri-input-bar">
+                        <input id="siriTextInput" type="text" class="siri-text-input" placeholder="Type or ask Aegis..." onkeydown="if(event.key === 'Enter') submitSiriText()">
+                        <button class="siri-send-btn" onclick="submitSiriText()">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat history logs in Glassmorphism Card -->
+                <div class="glass-card">
+                    <div class="section-title">Aegis Conversation Log</div>
+                    <div id="chatLogs">
+                        <div class="chat-bubble aegis">Hello, I am Aegis. Tell me any command such as "turn on flashlight", "call Mom", or ask me any question!</div>
+                    </div>
+                </div>
+
+                <!-- Suggested offline/online command quick chips -->
+                <div class="glass-card">
+                    <div class="section-title">Summoning Examples</div>
+                    <div class="chips-grid">
+                        <div class="chip" onclick="executeChipCommand('torch on')">💡 Turn on Torch</div>
+                        <div class="chip" onclick="executeChipCommand('torch off')">🔌 Turn off Torch</div>
+                        <div class="chip" onclick="executeChipCommand('mummy ko call')">📞 Call Mom</div>
+                        <div class="chip" onclick="executeChipCommand('what is the time')">⏰ Check Time</div>
+                        <div class="chip" onclick="executeChipCommand('tell me a joke')">🤣 Tell a Joke</div>
+                        <div class="chip" onclick="executeChipCommand('battery check')">🔋 Battery Status</div>
+                        <div class="chip" onclick="executeChipCommand('create a poem about siri')">🧠 Ask AI Brain</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SUB-APPS DRAWERS TAB ================= -->
+            <section id="subapps-tab" class="sec">
+                <div id="preinstalled-apps">
+                    <div class="section-title">Pre-installed Sub-Apps</div>
+                    <div class="grid-list">
+                        <!-- Secure Notes Subapp -->
+                        <div class="action-card" onclick="openPreinstalledApp('notes')">
+                            <div class="action-icon" style="color: var(--amber)"><i class="fa-solid fa-note-sticky"></i></div>
+                            <div class="action-label">Secure Notes</div>
+                        </div>
+                        <!-- BMI Calculator Subapp -->
+                        <div class="action-card" onclick="openPreinstalledApp('bmi')">
+                            <div class="action-icon" style="color: var(--green)"><i class="fa-solid fa-weight-scale"></i></div>
+                            <div class="action-label">BMI Calculator</div>
+                        </div>
+                        <!-- Pomodoro Timer Subapp -->
+                        <div class="action-card" onclick="openPreinstalledApp('pomodoro')">
+                            <div class="action-icon" style="color: var(--red)"><i class="fa-solid fa-business-time"></i></div>
+                            <div class="action-label">Focus Pomodoro</div>
+                        </div>
+                        <!-- 15-Puzzle Offline Game Subapp -->
+                        <div class="action-card" onclick="openPreinstalledApp('puzzle')">
+                            <div class="action-icon" style="color: var(--cyan)"><i class="fa-solid fa-puzzle-piece"></i></div>
+                            <div class="action-label">15-Puzzle Game</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom App Creator -->
+                <div class="glass-card" style="margin-top: 20px;">
+                    <div class="section-title"><i class="fa-solid fa-laptop-code" style="color: var(--p); margin-right: 8px;"></i>Create Custom Sub-App</div>
+                    <div class="form-group">
+                        <label class="form-label">Subapp Name</label>
+                        <input id="customAppName" type="text" class="form-input" placeholder="e.g. My Color Picker">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HTML/CSS/JS Source Code</label>
+                        <textarea id="customAppEditor" class="form-input" placeholder="&lt;div style=&quot;padding:20px;text-align:center;&quot;&gt;&#10;  &lt;h3&gt;Hello World!&lt;/h3&gt;&#10;&lt;/div&gt;"></textarea>
+                    </div>
+                    <button class="btn-m3" onclick="saveCustomApp()">Save and Register App</button>
+
+                    <!-- List of custom sub-apps registered by user -->
+                    <div id="customAppsList" style="margin-top: 16px;"></div>
+                </div>
+            </section>
+
+            <!-- ================= AUTOMATION TRIGGERS TAB ================= -->
+            <section id="automation-tab" class="sec">
+                <div class="glass-card">
+                    <div class="section-title">Create Tasker-Style Rule</div>
+                    <div class="form-group">
+                        <label class="form-label">When Event Fires</label>
+                        <select id="autoEvent" class="form-input">
+                            <option value="battery_low">🔋 Battery Drops Below 20%</option>
+                            <option value="charger_connected">🔌 Charger Connected</option>
+                            <option value="boot">📲 System Started (On Boot)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Then Execute Action Sequence</label>
+                        <select id="autoAction" class="form-input">
+                            <option value="speak_state">🔊 Speak Status (Battery/Charger alert)</option>
+                            <option value="torch_on">💡 Turn Flashlight ON</option>
+                            <option value="launch_camera">📷 Launch Phone Camera</option>
+                            <option value="vibrate_alert">⚡ Trigger Heavy Vibration Vibration</option>
+                        </select>
+                    </div>
+                    <button class="btn-m3" onclick="saveAutomationRule()">Add Automation Rule</button>
+                </div>
+
+                <div class="glass-card">
+                    <div class="section-title">Active Task-Automation Rules</div>
+                    <div id="activeRulesList" style="display: flex; flex-direction: column; gap: 8px;">
+                        <p style="font-size: 12px; color: var(--txt3)">No active task rules configured.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= INSTALLED APPS DRAWER ================= -->
+            <section id="allapps-tab" class="sec">
+                <div class="glass-card">
+                    <div class="section-title">Installed Applications</div>
+                    <p style="font-size: 12px; color: var(--txt3); margin-bottom: 12px;">Browse or search launchable apps on your device.</p>
+                    <input type="text" id="appSearchInput" class="form-input" placeholder="Search application packages..." oninput="filterInstalledApps(this.value)">
+                    <div id="installedAppsGrid" class="grid-list" style="margin-top: 16px; max-height: 480px; overflow-y: auto;">
+                        <p style="font-size: 13px; color: var(--txt3);">Scanning system applications...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SYSTEM SETTINGS ================= -->
+            <section id="settings-tab" class="sec">
+                <div class="glass-card">
+                    <div class="section-title">Aegis Configuration</div>
+                    <div class="form-group">
+                        <label class="form-label">Aegis Name Alias</label>
+                        <input id="aegisName" class="form-input" value="Aegis" onchange="updateAssistantSettings()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Assistant Brain Mode</label>
+                        <select id="aegisBrainMode" class="form-input" onchange="updateAssistantSettings(); onBrainModeChange();">
+                            <option value="pollinations">🌐 Pollinations AI (High-speed, cloud, free)</option>
+                            <option value="gemini" id="geminiOption">✨ Gemini 3.5 Flash (Secure native Android API)</option>
+                            <option value="ollama">🦙 Ollama AI (Local LLM via Custom URL)</option>
+                            <option value="custom_api">🔌 Custom API (Define endpoint & schema)</option>
+                            <option value="offline">🛡 Offline Aegis Chatbot (Completely offline rules)</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Ollama Configuration Panel -->
+                    <div id="ollamaConfigPanel" class="form-group" style="display: none; border-left: 3px solid #9b6dff; padding-left: 12px; margin-top: 12px;">
+                        <label class="form-label" style="color: #9b6dff; font-weight: 700;">Ollama Host URL</label>
+                        <input id="ollamaUrl" class="form-input" placeholder="http://10.0.2.2:11434" value="http://10.0.2.2:11434" onchange="updateAssistantSettings()" style="margin-bottom: 8px;">
+                        
+                        <label class="form-label" style="color: #9b6dff; font-weight: 700;">Ollama Model Name</label>
+                        <input id="ollamaModel" class="form-input" placeholder="llama3" value="llama3" onchange="updateAssistantSettings()" style="margin-bottom: 8px;">
+                        
+                        <label class="form-label" style="color: #9b6dff; font-weight: 700;">Modelfile Prompt (System Setup)</label>
+                        <textarea id="ollamaModelfile" class="form-input" style="height: 120px; font-family: monospace; font-size: 11px; line-height: 1.4;" onchange="updateAssistantSettings()"></textarea>
+                    </div>
+
+                    <!-- Dynamic Custom REST API Configuration Panel -->
+                    <div id="customApiConfigPanel" class="form-group" style="display: none; border-left: 3px solid #22d3ee; padding-left: 12px; margin-top: 12px;">
+                        <label class="form-label" style="color: #22d3ee; font-weight: 700;">Custom API Endpoint URL</label>
+                        <input id="customApiEndpoint" class="form-input" placeholder="https://api.openai.com/v1/chat/completions" value="https://api.openai.com/v1/chat/completions" onchange="updateAssistantSettings()" style="margin-bottom: 8px;">
+                        
+                        <label class="form-label" style="color: #22d3ee; font-weight: 700;">Custom Headers (JSON)</label>
+                        <textarea id="customApiHeaders" class="form-input" style="height: 80px; font-family: monospace; font-size: 11px; line-height: 1.4; margin-bottom: 8px;" placeholder='{ "Content-Type": "application/json" }' onchange="updateAssistantSettings()"></textarea>
+                        
+                        <label class="form-label" style="color: #22d3ee; font-weight: 700;">JSON Body Template (Placeholder: SYSTEM_PROMPT, USER_PROMPT)</label>
+                        <textarea id="customApiBodyTemplate" class="form-input" style="height: 120px; font-family: monospace; font-size: 11px; line-height: 1.4;" onchange="updateAssistantSettings()"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Gemini API Key Status</label>
+                        <div style="font-size: 13px; font-weight: 600;" id="apiKeyStatus">Checking...</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Speech Voice Language</label>
+                        <select id="aegisVoiceLang" class="form-input" onchange="updateAssistantSettings()">
+                            <option value="hinglish">Hinglish / Hindi (India)</option>
+                            <option value="en">English (US)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Theme Color Selector (M3 Guidelines) -->
+                <div class="glass-card">
+                    <div class="section-title">Visual Layout Themes</div>
+                    <p style="font-size: 12px; color: var(--txt3);">Set Aegis signature color palette.</p>
+                    <div class="theme-picker-row">
+                        <div class="theme-color-op active" style="background: #9b6dff" onclick="setAegisTheme('cosmic', this)"></div>
+                        <div class="theme-color-op" style="background: #22d3ee" onclick="setAegisTheme('ocean', this)"></div>
+                        <div class="theme-color-op" style="background: #fbbf24" onclick="setAegisTheme('midnight', this)"></div>
+                        <div class="theme-color-op" style="background: #34d399" onclick="setAegisTheme('forest', this)"></div>
+                        <div class="theme-color-op" style="background: #f472b6" onclick="setAegisTheme('rose', this)"></div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <!-- ================= SUB-APP OVERLAY IFRAME CONTAINER ================= -->
+    <div id="subAppFrameContainer">
+        <div id="subAppFrameHeader">
+            <h3 id="subAppFrameTitle" style="color: var(--p)">Siri Sub-App</h3>
+            <button class="btn-m3" style="padding: 6px 14px; box-shadow: none;" onclick="closeSubAppFrame()"><i class="fa-solid fa-circle-xmark"></i> Close</button>
+        </div>
+        <iframe id="subAppIframe" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+    </div>
+
+    <!-- Siri Fluid dynamic bottom ribbon -->
+    <div id="siriBottomWave"></div>
+
+    <!-- Script engine implementing Speech-to-text, Text-to-speech bridges, offline predefined routines and Gemini API -->
+    <script>
+        // Siri Synthesized Sound Chimes Engine
+        let siriAudioCtx = null;
+        function playSiriSound(type) {
+            try {
+                if (!siriAudioCtx) {
+                    siriAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (siriAudioCtx.state === 'suspended') {
+                    siriAudioCtx.resume();
+                }
+                const ctx = siriAudioCtx;
+                if (type === 'start') {
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                    osc1.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08); // E5
+                    gain1.gain.setValueAtTime(0, ctx.currentTime);
+                    gain1.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.01);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    osc1.start();
+                    osc1.stop(ctx.currentTime + 0.3);
+                } else if (type === 'done') {
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                    osc1.frequency.setValueAtTime(440.00, ctx.currentTime + 0.08); // A4
+                    gain1.gain.setValueAtTime(0, ctx.currentTime);
+                    gain1.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.01);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.38);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    osc1.start();
+                    osc1.stop(ctx.currentTime + 0.4);
+                }
+            } catch (e) {
+                console.error("Audio trigger failed:", e);
+            }
+        }
+
+        // Global State
+        let activeTab = 'assistant-tab';
+        let isAegisListening = false;
+        let assistantName = 'Aegis';
+        let brainMode = 'pollinations';
+        let ttsLanguage = 'hinglish';
+        let systemTheme = 'cosmic';
+        let installedAppsList = [];
+        let conversationHistory = [];
+        let autoRules = [];
+        let customSubApps = [];
+
+        // Predefined Offline Commands Dictionary
+        // Supports Hindi/English/Hinglish triggers
+        const OFFLINE_COMMANDS = [
+            {
+                triggers: ["torch on", "torch chalao", "light chalao", "torch chalu", "flashlight on", "make it bright", "torch on karo"],
+                action: function() {
+                    setIsTorchOn(true);
+                    speakText("Maine torch chala diya hai!");
+                }
+            },
+            {
+                triggers: ["torch off", "torch band", "flashlight off", "light off", "torch band karo"],
+                action: function() {
+                    setIsTorchOn(false);
+                    speakText("Maine torch ko band kar diya hai!");
+                }
+            },
+            {
+                triggers: ["what is the time", "time kya hai", "time please", "samay", "tell me time", "samay batayiye"],
+                action: function() {
+                    const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    speakText("Abhi " + timeStr + " ho rahe hain!");
+                }
+            },
+            {
+                triggers: ["aaj kya date hai", "date check", "what is the date", "date batayiye"],
+                action: function() {
+                    const dateStr = new Date().toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
+                    speakText("Aaj " + dateStr + " hai!");
+                }
+            },
+            {
+                triggers: ["battery check", "charge kitna hai", "battery status", "charge check"],
+                action: function() {
+                    if (window.app && window.app.GetBatteryLevel) {
+                        const lvl = app.GetBatteryLevel();
+                        speakText("Aapki battery currently " + lvl + " percent charged hai.");
+                    } else {
+                        speakText("Battery level approximately 75 percent hai.");
+                    }
+                }
+            },
+            {
+                triggers: ["tell a joke", "joke sunao", "kuch funny bolo", "masti", "koi chutkula sunao"],
+                action: function() {
+                    const jokes = [
+                        "Why did the smartphone go to the doctor? Because it had a virus! Haha.",
+                        "Programmer to client: Humara system bilkul safe hai. Client to programmer: Toh password key kyun manga? Haha.",
+                        "What is a computer's favorite snack? Microchips! Ha-ha."
+                    ];
+                    const chosen = jokes[Math.floor(Math.random() * jokes.length)];
+                    speakText(chosen);
+                }
+            },
+            {
+                triggers: ["quote of the day", "motivation do", "motivate me", "inspire me"],
+                action: function() {
+                    const quotes = [
+                        "Hausla dhar, har mushkil ka hal nikalega!",
+                        "Believe in yourself and you are halfway there.",
+                        "Aisa koi kaam nahi jo aap kar na sakein - Aegis stands beside you!"
+                    ];
+                    const chosen = quotes[Math.floor(Math.random() * quotes.length)];
+                    speakText(chosen);
+                }
+            },
+            {
+                triggers: ["volume up", "awaz badhao", "louder"],
+                action: function() {
+                    if (window.app && window.app.SetVolume) {
+                        app.SetVolume("media", 80);
+                    }
+                    speakText("Maine media volume badha diya hai.");
+                }
+            },
+            {
+                triggers: ["volume down", "awaz kam karo", "silent mode"],
+                action: function() {
+                    if (window.app && window.app.SetVolume) {
+                        app.SetVolume("media", 20);
+                    }
+                    speakText("Maine media volume kam kar diya hai.");
+                }
+            },
+            {
+                triggers: ["open youtube", "youtube chalao"],
+                action: function() {
+                    launchPackageApp("com.google.android.youtube", "YouTube");
+                }
+            },
+            {
+                triggers: ["open whatsapp", "whatsapp kholo"],
+                action: function() {
+                    launchPackageApp("com.whatsapp", "WhatsApp");
+                }
+            },
+            {
+                triggers: ["call mummy", "mummy ko call", "mom", "call mom"],
+                action: function() {
+                    if (window.app && window.app.MakeCall) {
+                        app.MakeCall("9876543210");
+                        speakText("Mummy ko dial kiya jaa raha hai.");
+                    } else {
+                        speakText("Native dialer directly loaded.");
+                    }
+                }
+            }
+        ];
+
+        // Load data on startup
+        window.onload = function() {
+            loadCustomApps();
+            loadAutomationRules();
+            loadSettings();
+            scanInstalledApps();
+            checkApiKeyStatus();
+
+            // Track offline updates
+            try {
+                if (window.app && window.app.GetSystemInfo) {
+                    const sys = JSON.parse(app.GetSystemInfo());
+                    document.getElementById("connStatus").textContent = sys.online ? "ONLINE" : "OFFLINE";
+                    if (sys.online) {
+                        document.getElementById("connStatus").parentElement.style.color = "var(--green)";
+                    } else {
+                        document.getElementById("connStatus").parentElement.style.color = "var(--red)";
+                        document.querySelector(".status-dot").style.background = "var(--red)";
+                    }
+                }
+            } catch(e) {}
+        };
+
+        // Sidebar Navigation
+        function toggleSidebar() {
+            const sb = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+            sb.classList.toggle("open");
+            overlay.classList.toggle("show");
+            document.getElementById("app").classList.toggle("sidebar-open");
+        }
+
+        // Tab Switching API
+        function switchTab(tabId) {
+            document.querySelectorAll(".sec").forEach(s => s.classList.remove("active"));
+            document.querySelectorAll(".nav-lnk").forEach(l => l.classList.remove("active"));
+            
+            document.getElementById(tabId).classList.add("active");
+            document.querySelector(`.nav-lnk[data-tab="${tabId}"]`).classList.add("active");
+
+            activeTab = tabId;
+            toggleSidebar();
+            vibrateDevice(40);
+        }
+
+        // Assistant Speech Synthesis / Text to Speech
+        function speakText(txt) {
+            updateOrbState('speaking');
+            addChatBubble(txt, 'aegis');
+            
+            if (window.app && window.app.Speak) {
+                app.Speak(txt, ttsLanguage);
+                // Return to idle state after the approximate length of speaking
+                setTimeout(() => {
+                    updateOrbState('idle');
+                }, txt.length * 68);
+            } else {
+                // Web Speech API translation/synthesizer fallback for testing/browser
+                const utterance = new SpeechSynthesisUtterance(txt);
+                if (ttsLanguage === 'hinglish') {
+                    utterance.lang = 'hi-IN';
+                } else {
+                    utterance.lang = 'en-US';
+                }
+                utterance.onend = function() {
+                    updateOrbState('idle');
+                };
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Assistant STT Recognition
+        function toggleListening() {
+            if (isAegisListening) {
+                stopSpeechRecognizer();
+            } else {
+                startSpeechRecognizer();
+            }
+        }
+
+        function startSpeechRecognizer() {
+            vibrateDevice(50);
+            updateOrbState('listening');
+            if (window.app && window.app.StartListening) {
+                app.StartListening(ttsLanguage);
+            } else {
+                // Web Speech API speech-to-text fallback
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SR) {
+                    const listener = new SR();
+                    listener.lang = ttsLanguage === 'hinglish' ? 'hi-IN' : 'en-US';
+                    listener.onresult = function(event) {
+                        const resultText = event.results[0][0].transcript;
+                        handleCommand(resultText);
+                    };
+                    listener.onerror = function() {
+                        updateOrbState('idle');
+                    };
+                    listener.onend = function() {
+                        updateOrbState('idle');
+                    };
+                    listener.start();
+                    isAegisListening = true;
+                    document.getElementById("assistantStatus").textContent = "Aegis listening...";
+                } else {
+                    alert("This environment doesn't support Web Speech recognition.");
+                }
+            }
+        }
+
+        function stopSpeechRecognizer() {
+            updateOrbState('idle');
+            if (window.app && window.app.StopListening) {
+                app.StopListening();
+            }
+            isAegisListening = false;
+        }
+
+        // Native callback triggers
+        window.triggerVoiceFromNative = function() {
+            startSpeechRecognizer();
+        };
+
+        let wasListening = false;
+        window.onSpeechStateChange = function(state) {
+            if (state === 'listening') {
+                isAegisListening = true;
+                wasListening = true;
+                document.getElementById("assistantStatus").textContent = "Aegis listening...";
+                updateOrbState('listening');
+                playSiriSound('start');
+            } else {
+                isAegisListening = false;
+                document.getElementById("assistantStatus").textContent = "Summoning brain...";
+                updateOrbState('idle');
+                if (wasListening) {
+                    playSiriSound('done');
+                    wasListening = false;
+                }
+            }
+        };
+
+        window.onSpeechRmsChanged = function(value) {
+            // Visual dynamic waves pulsing response to audio power
+            const bars = document.querySelectorAll(".wave-bar");
+            bars.forEach(b => {
+                const h = Math.max(6, Math.min(36, Math.abs(value) * 3));
+                b.style.height = h + "px";
+                if (h > 15) {
+                    b.classList.add("active");
+                } else {
+                    b.classList.remove("active");
+                }
+            });
+
+            // Pulse the holographic Siri orb scale dynamically on rmsdB level!
+            const scaleAmount = 1 + (Math.max(0, value) / 30);
+            const orbOuter = document.getElementById("siriOrb");
+            if (orbOuter && (isAegisListening || orbOuter.classList.contains("speaking"))) {
+                orbOuter.style.transform = `scale(${scaleAmount})`;
+            }
+        };
+
+        window.onSpeechPartialResult = function(text) {
+            document.getElementById("assistantStatus").textContent = text;
+        };
+
+        window.onSpeechResult = function(text) {
+            isAegisListening = false;
+            handleCommand(text);
+        };
+
+        // HIGH PREFORMANCE OFFLINE INTENT PARSER (Hindi / Hinglish / English rules)
+        function tryParseDynamicOfflineCommand(userInput) {
+            const input = userInput.trim().toLowerCase();
+
+            // 1. Torch/Flashlight triggers:
+            const torchOnKeywords = ["torch on", "batti jalao", "light on", "torch chala", "flashlight on", "ujala karo", "batti on", "chalu karo torch", "torch chalu"];
+            const torchOffKeywords = ["torch off", "batti bujhao", "light off", "torch band", "flashlight off", "andhera karo", "batti off", "band karo torch", "flashlight band"];
+            if (torchOnKeywords.some(kw => input.includes(kw))) {
+                setIsTorchOn(true);
+                speakText("Ji, torch ko chalu kar diya hai!");
+                return true;
+            }
+            if (torchOffKeywords.some(kw => input.includes(kw))) {
+                setIsTorchOn(false);
+                speakText("Ji, torch ko band kar diya hai.");
+                return true;
+            }
+
+            // 2. Calling triggers:
+            const callPatterns = [
+                /^call (.+)$/i,
+                /^phone (.+)$/i,
+                /^(.+) ko phone lagao$/i,
+                /^(.+) ko call karo$/i,
+                /^(.+) ko phone karo$/i,
+                /^dial (.+)$/i
+            ];
+            for (let pattern of callPatterns) {
+                const match = input.match(pattern);
+                if (match) {
+                    const targetStr = match[1].trim();
+                    let finalNumber = targetStr;
+                    let foundName = targetStr;
+                    
+                    if (!/^\+?[0-9\- ]+$/.test(targetStr) && window.app && window.app.GetContacts) {
+                        const contactsStr = window.app.GetContacts();
+                        let contacts = [];
+                        try { contacts = JSON.parse(contactsStr); } catch(e){}
+                        const found = contacts.find(c => c.name.toLowerCase().includes(targetStr.toLowerCase()));
+                        if (found) {
+                            finalNumber = found.number;
+                            foundName = found.name;
+                        }
+                    }
+                    if (window.app && window.app.MakeCall) {
+                        window.app.MakeCall(finalNumber);
+                        speakText(foundName + " ko native dialer se call milayi jaa rahi hai.");
+                        return true;
+                    }
+                }
+            }
+
+            // 3. Message/SMS triggers:
+            const smsPatterns = [
+                /^message\s+([^\s]+)\s+(.+)$/i,
+                /^sms\s+([^\s]+)\s+(.+)$/i,
+                /^send\s+message\s+to\s+([^\s]+)\s+(.+)$/i,
+                /^send\s+sms\s+to\s+([^\s]+)\s+(.+)$/i,
+                /^([^\s]+)\s+ko\s+message\s+bhejo\s+(.+)$/i,
+                /^([^\s]+)\s+ko\s+message\s+karo\s+(.+)$/i,
+                /^([^\s]+)\s+ko\s+sandesh\s+bhejo\s+(.+)$/i
+            ];
+            for (let pattern of smsPatterns) {
+                const match = input.match(pattern);
+                if (match) {
+                     const targetStr = match[1].trim();
+                     const msgText = match[2].trim();
+                     let finalNumber = targetStr;
+                     let foundName = targetStr;
+
+                     if (!/^\+?[0-9\- ]+$/.test(targetStr) && window.app && window.app.GetContacts) {
+                         const contactsStr = window.app.GetContacts();
+                         let contacts = [];
+                         try { contacts = JSON.parse(contactsStr); } catch(e){}
+                         const found = contacts.find(c => c.name.toLowerCase().includes(targetStr.toLowerCase()));
+                         if (found) {
+                             finalNumber = found.number;
+                             foundName = found.name;
+                         }
+                     }
+                     if (window.app && window.app.SendSMS) {
+                         window.app.SendSMS(finalNumber, msgText);
+                         speakText(foundName + " ko message bheja jaa raha hai: " + msgText);
+                         return true;
+                     }
+                }
+            }
+
+            // 4. App launchers
+            const openPatterns = [
+                /^open (.+)$/i,
+                /^launch (.+)$/i,
+                /^(.+) kholo$/i,
+                /^(.+) chalao$/i,
+                /^(.+) start karo$/i
+            ];
+            for (let pattern of openPatterns) {
+                const match = input.match(pattern);
+                if (match) {
+                    const appQuery = match[1].trim().toLowerCase();
+                    if (window.app) {
+                        const installedStr = window.app.GetInstalledApps ? window.app.GetInstalledApps() : "[]";
+                        let apps = [];
+                        try { apps = JSON.parse(installedStr); } catch(e){}
+                        let targetPkg = "";
+                        let matchedAppName = appQuery;
+                        for (let appItem of apps) {
+                            if (appItem.name.toLowerCase().includes(appQuery)) {
+                                targetPkg = appItem.package;
+                                matchedAppName = appItem.name;
+                                break;
+                            }
+                        }
+                        if (targetPkg) {
+                            window.app.LaunchApp(targetPkg);
+                            speakText(matchedAppName + " khol diya hai.");
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            // 5. Volume control:
+            const volUpKeywords = ["volume badhao", "awaz badhao", "volume up", "louder", "tezz karo"];
+            const volDownKeywords = ["volume kam karo", "awaz kam karo", "volume down", "silent", "dheere karo"];
+            if (volUpKeywords.some(kw => input.includes(kw))) {
+                if (window.app && window.app.SetVolume) {
+                    window.app.SetVolume("media", 80);
+                }
+                speakText("Volume badha diya hai.");
+                return true;
+            }
+            if (volDownKeywords.some(kw => input.includes(kw))) {
+                if (window.app && window.app.SetVolume) {
+                    window.app.SetVolume("media", 20);
+                }
+                speakText("Volume kam kar diya hai.");
+                return true;
+            }
+
+            // 6. Basic responses:
+            if (input.includes("time") || input.includes("samay") || input.includes("baje")) {
+                const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                speakText("Samay batayein toh abhi " + timeStr + " ho rahe hain.");
+                return true;
+            }
+            if (input.includes("battery") || input.includes("charge") || input.includes("charging")) {
+                if (window.app && window.app.GetBatteryLevel) {
+                    const lvl = app.GetBatteryLevel();
+                    speakText("Battery level check kiya hai. Abhi " + lvl + " percent balance hai.");
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // COMMAND DISPATCHER (Offline pre-parsed rules first, then custom AI / Ollama controllers)
+        function handleCommand(userInput) {
+            if (!userInput) return;
+            addChatBubble(userInput, 'user');
+
+            // 1. Check dynamic Hindi/English voice dictionary first
+            const handlesOffline = tryParseDynamicOfflineCommand(userInput);
+            if (handlesOffline) return;
+
+            const normalizedInput = userInput.trim().toLowerCase();
+            
+            // 2. Check general offline static list commands
+            let matched = false;
+            for (let cmd of OFFLINE_COMMANDS) {
+                for (let trigger of cmd.triggers) {
+                    if (normalizedInput.includes(trigger)) {
+                        updateOrbState('processing');
+                        setTimeout(() => {
+                            cmd.action();
+                        }, 500);
+                        matched = true;
+                        break;
+                    }
+                }
+                if (matched) break;
+            }
+
+            if (matched) return;
+
+            // Trigger automation sequences
+            checkAutomationRoutines(normalizedInput);
+
+            // 3. Dispatch to multi-brain choice:
+            updateOrbState('processing');
+            document.getElementById("assistantStatus").textContent = "Triggering multi-brain: " + brainMode;
+
+            if (brainMode === 'offline') {
+                setTimeout(() => {
+                    speakText("Offline mode: '" + userInput + "' matching commands not found. Use settings to set AI brains like Gemini or local Ollama.");
+                }, 800);
+            } else if (brainMode === 'gemini' && window.app && window.app.IsGeminiKeyConfigured()) {
+                app.CallGemini(userInput, "onAegisResponse");
+            } else if (brainMode === 'ollama' && window.app && window.app.CallCustomApi) {
+                const endpoint = document.getElementById("ollamaUrl").value.trim() + "/api/generate";
+                const systemPrompt = document.getElementById("ollamaModelfile").value;
+                const bodyStr = JSON.stringify({
+                    model: document.getElementById("ollamaModel").value.trim(),
+                    prompt: userInput,
+                    system: systemPrompt,
+                    stream: false
+                });
+                app.CallCustomApi(endpoint, "POST", '{"Content-Type":"application/json"}', bodyStr, "onOllamaResponse");
+            } else if (brainMode === 'custom_api' && window.app && window.app.CallCustomApi) {
+                const endpoint = document.getElementById("customApiEndpoint").value.trim();
+                const headers = document.getElementById("customApiHeaders").value;
+                const systemPrompt = "You are Aegis, a siri-like android controller assistant. Append dynamic actions [[CALL:number_or_name]], [[SMS:number_or_name|text]], [[LIGHT:ON/OFF]], [[OPEN:app_common_name]], [[NOTIFY:title|text]], [[VOLUME:media|50]] to control phone operations whenever requested.";
+                let bodyTemplate = document.getElementById("customApiBodyTemplate").value;
+                
+                // Secure placeholders replacement
+                const sanitizedUser = userInput.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+                const sanitizedSys = systemPrompt.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+                bodyTemplate = bodyTemplate.replace(/SYSTEM_PROMPT/g, sanitizedSys).replace(/USER_PROMPT/g, sanitizedUser);
+                
+                app.CallCustomApi(endpoint, "POST", headers, bodyTemplate, "onCustomApiResponse");
+            } else {
+                // Pollinations high speed cloud model (highly robust free backup fallback)
+                fetch(`https://text.pollinations.ai/prompt/${encodeURIComponent(userInput + " (Be responsive, act as Aegis AI Siri. Speak " + ttsLanguage + " style.)")}?model=gemini-3.5-flash`)
+                    .then(res => res.text())
+                    .then(response => {
+                        onAegisResponse(response);
+                    })
+                    .catch(e => {
+                        speakText("Internet missing. Please check your connection or switch brain mode to completely offline.");
+                    });
+            }
+        }
+
+        // Custom Dynamic Callback Triggers
+        window.onOllamaResponse = function(respText) {
+            try {
+                if (respText.startsWith("Error:") || respText.startsWith("Http Error:")) {
+                    speakText(respText + ". Please verify if local Ollama service is reachable on current network.");
+                    return;
+                }
+                const json = JSON.parse(respText);
+                const answer = json.response || json.text || "";
+                onAegisResponse(answer);
+            } catch (e) {
+                onAegisResponse(respText); // response fallback string
+            }
+        };
+
+        window.onCustomApiResponse = function(respText) {
+            try {
+                if (respText.startsWith("Error:") || respText.startsWith("Http Error:")) {
+                    speakText(respText);
+                    return;
+                }
+                const json = JSON.parse(respText);
+                let answer = "";
+                if (json.choices && json.choices[0] && json.choices[0].message) {
+                    answer = json.choices[0].message.content;
+                } else if (json.choices && json.choices[0] && json.choices[0].text) {
+                    answer = json.choices[0].text;
+                } else {
+                    answer = respText;
+                }
+                onAegisResponse(answer);
+            } catch (e) {
+                onAegisResponse(respText);
+            }
+        };
+
+        // Aegis Tasker-Style AI Executions Engine
+        window.onAegisResponse = function(answer) {
+            let speechText = answer;
+            
+            // Regex match structures for automated tasker commands
+            const callRegex = /\[\[CALL:(.*?)\]\]/gi;
+            const smsRegex = /\[\[SMS:(.*?)\|(.*?)\]\]/gi;
+            const lightRegex = /\[\[LIGHT:(.*?)\]\]/gi;
+            const openRegex = /\[\[OPEN:(.*?)\]\]/gi;
+            const volRegex = /\[\[VOLUME:(.*?)\|(.*?)\]\]/gi;
+            const notifyRegex = /\[\[NOTIFY:(.*?)\]\]/gi;
+
+            let match;
+
+            // 1. Flashlight trigger
+            while ((match = lightRegex.exec(answer)) !== null) {
+                const action = match[1].trim().toUpperCase();
+                if (window.app && window.app.SetFlashlight) {
+                    window.app.SetFlashlight(action === "ON");
+                    vibrateDevice(60);
+                }
+            }
+
+            // 2. Open Application / Package
+            while ((match = openRegex.exec(answer)) !== null) {
+                const appQuery = match[1].trim().toLowerCase();
+                if (window.app) {
+                    const installedStr = window.app.GetInstalledApps ? window.app.GetInstalledApps() : "[]";
+                    let apps = [];
+                    try { apps = JSON.parse(installedStr); } catch(e){}
+                    let targetPkg = "";
+                    for (let appItem of apps) {
+                        if (appItem.name.toLowerCase().includes(appQuery)) {
+                            targetPkg = appItem.package;
+                            break;
+                        }
+                    }
+                    if (targetPkg) {
+                        window.app.LaunchApp(targetPkg);
+                    } else {
+                        window.app.LaunchApp(appQuery);
+                    }
+                }
+            }
+
+            // 3. Contacts Caller
+            while ((match = callRegex.exec(answer)) !== null) {
+                const targetStr = match[1].trim();
+                let finalNumber = targetStr;
+                
+                if (!/^\+?[0-9\- ]+$/.test(targetStr) && window.app && window.app.GetContacts) {
+                    const contactsStr = window.app.GetContacts();
+                    let contacts = [];
+                    try { contacts = JSON.parse(contactsStr); } catch(e){}
+                    const found = contacts.find(c => c.name.toLowerCase().includes(targetStr.toLowerCase()));
+                    if (found) {
+                        finalNumber = found.number;
+                    }
+                }
+                if (window.app && window.app.MakeCall) {
+                    window.app.MakeCall(finalNumber);
+                }
+            }
+
+            // 4. SMS Messenger
+            while ((match = smsRegex.exec(answer)) !== null) {
+                const targetStr = match[1].trim();
+                const msgText = match[2].trim();
+                let finalNumber = targetStr;
+                
+                if (!/^\+?[0-9\- ]+$/.test(targetStr) && window.app && window.app.GetContacts) {
+                    const contactsStr = window.app.GetContacts();
+                    let contacts = [];
+                    try { contacts = JSON.parse(contactsStr); } catch(e){}
+                    const found = contacts.find(c => c.name.toLowerCase().includes(targetStr.toLowerCase()));
+                    if (found) {
+                        finalNumber = found.number;
+                    }
+                }
+                if (window.app && window.app.SendSMS) {
+                    window.app.SendSMS(finalNumber, msgText);
+                }
+            }
+
+            // 5. Volume adjustment
+            while ((match = volRegex.exec(answer)) !== null) {
+                const streamType = match[1].trim();
+                const level = parseInt(match[2].trim()) || 50;
+                if (window.app && window.app.SetVolume) {
+                    window.app.SetVolume(streamType, level);
+                }
+            }
+
+            // 6. Notifications
+            while ((match = notifyRegex.exec(answer)) !== null) {
+                const textDetail = match[1].trim();
+                if (window.app && window.app.ShowTaskerNotification) {
+                    window.app.ShowTaskerNotification("Aegis Task Manager", textDetail);
+                }
+            }
+
+            // Clean speaking text so voice synthesis doesn't speak tasker brackets syntax
+            speechText = speechText.replace(/\[\[.*?\]\]/gi, "").trim();
+            if (!speechText) {
+                speechText = "Command executed successfully.";
+            }
+
+            speakText(speechText);
+        };
+
+        function executeChipCommand(cmdText) {
+            handleCommand(cmdText);
+        }
+
+        function submitSiriText() {
+            const input = document.getElementById("siriTextInput");
+            const q = input.value.trim();
+            if (q) {
+                input.value = "";
+                handleCommand(q);
+                vibrateDevice(50);
+            }
+        }
+
+        // UI helper: update Siri-orb state
+        function updateOrbState(state) {
+            const orb = document.getElementById("siriOrb");
+            const bottomWave = document.getElementById("siriBottomWave");
+            orb.className = "siri-orb-outer"; // Reset classes
+            if (bottomWave) {
+                bottomWave.classList.remove("active");
+            }
+            if (state === 'listening') {
+                orb.className = "siri-orb-outer listening";
+                if (bottomWave) bottomWave.classList.add("active");
+            } else if (state === 'processing') {
+                orb.className = "siri-orb-outer processing";
+                if (bottomWave) bottomWave.classList.add("active");
+            } else if (state === 'speaking') {
+                orb.className = "siri-orb-outer speaking";
+                if (bottomWave) bottomWave.classList.add("active");
+            }
+        }
+
+        // Add bubbles dynamically
+        function addChatBubble(msg, senderClass) {
+            const container = document.getElementById("chatLogs");
+            const bubble = document.createElement("div");
+            bubble.className = `chat-bubble ${senderClass}`;
+            bubble.textContent = msg;
+            container.appendChild(bubble);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Device Control Bridge API Helpers
+        function setIsTorchOn(on) {
+            if (window.app && window.app.SetFlashlight) {
+                app.SetFlashlight(on);
+            }
+        }
+
+        function vibrateDevice(duration) {
+            if (window.app && window.app.Vibrate) {
+                app.Vibrate(duration);
+            }
+        }
+
+        function launchPackageApp(pkg, label) {
+            if (window.app && window.app.LaunchApp) {
+                app.LaunchApp(pkg);
+                speakText("Maine " + label + " ko chala diya hai!");
+            } else {
+                speakText("Offline system: launch app request processed.");
+            }
+        }
+
+        // ================= PRE-INSTALLED SUBAPPS LOGIC =================
+        function openPreinstalledApp(type) {
+            vibrateDevice(40);
+            const container = document.getElementById("subAppFrameContainer");
+            const iframe = document.getElementById("subAppIframe");
+            const title = document.getElementById("subAppFrameTitle");
+
+            let appContent = "";
+            let appTitle = "";
+
+            if (type === 'notes') {
+                appTitle = "📓 Secure Notes";
+                appContent = `
+                    <html>
+                    <body style="font-family:'Sora',sans-serif;background:#0d0a1e;color:#fff;padding:16px;">
+                        <h3>Notebook</h3>
+                        <textarea id="noteText" placeholder="Write something down..." style="width:100%;height:140px;background:#1a0a3d;color:#fff;border:1px solid #9B6DFF;border-radius:10px;padding:12px;margin:12px 0;"></textarea>
+                        <button onclick="saveNote()" style="width:100%;padding:12px;background:#9B6DFF;border:none;border-radius:10px;color:#fff;font-weight:bold;cursor:pointer;">Save secure notes</button>
+                        <div id="status" style="margin-top:12px;color:#34D399;font-weight:bold;font-size:13px;"></div>
+                        <script>
+                            document.getElementById("noteText").value = localStorage.getItem("aegis_secure_notes") || "";
+                            function saveNote() {
+                                localStorage.setItem("aegis_secure_notes", document.getElementById("noteText").value);
+                                document.getElementById("status").textContent = "✅ Saved locally!";
+                                setTimeout(() => document.getElementById("status").textContent = "", 2000);
+                            }
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+            } else if (type === 'bmi') {
+                appTitle = "⚖️ BMI Calculator";
+                appContent = `
+                    <html>
+                    <body style="font-family:'Sora',sans-serif;background:#0d0a1e;color:#fff;padding:16px;">
+                        <h3>BMI</h3>
+                        <input id="w" type="number" placeholder="Weight in kg" style="width:100%;padding:10px;background:#1a0a3d;color:#fff;border:1px solid #9B6DFF;border-radius:8px;margin-bottom:8px;">
+                        <input id="h" type="number" placeholder="Height in cm" style="width:100%;padding:10px;background:#1a0a3d;color:#fff;border:1px solid #9B6DFF;border-radius:8px;margin-bottom:12px;">
+                        <button onclick="calc()" style="width:100%;padding:12px;background:#9B6DFF;border:none;border-radius:10px;color:#fff;font-weight:bold;cursor:pointer;">Calculate</button>
+                        <div id="output" style="margin-top:16px;font-size:18px;font-weight:bold;text-align:center;"></div>
+                        <script>
+                            function calc() {
+                                const w = parseFloat(document.getElementById("w").value);
+                                const h = parseFloat(document.getElementById("h").value)/100;
+                                if(w && h) {
+                                    const bmi = (w / (h * h)).toFixed(1);
+                                    let cat = "Normal weight";
+                                    if(bmi < 18.5) cat = "Underweight";
+                                    else if(bmi >= 25) cat = "Overweight";
+                                    document.getElementById("output").textContent = "Your BMI is " + bmi + " ("+cat+")";
+                                }
+                            }
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+            } else if (type === 'pomodoro') {
+                appTitle = "🍅 Focus Pomodoro";
+                appContent = `
+                    <html>
+                    <body style="font-family:'Sora',sans-serif;background:#0d0a1e;color:#fff;padding:16px;text-align:center;">
+                        <h3>Pomodoro</h3>
+                        <div style="font-size:48px;font-weight:bold;margin:20px 0;color:#9B6DFF;" id="timer">25:00</div>
+                        <button onclick="start()" style="width:80px;padding:8px;background:#9B6DFF;border:none;border-radius:6px;color:#fff;">Start</button>
+                        <button onclick="reset()" style="width:80px;padding:8px;background:#221840;border:1px solid #9b6dff;border-radius:6px;color:#fff;margin-left:8px;">Reset</button>
+                        <script>
+                            let secs = 25 * 60;
+                            let int = null;
+                            function start() {
+                                if (int) return;
+                                int = setInterval(() => {
+                                    secs--;
+                                    let m = Math.floor(secs / 60);
+                                    let s = secs % 60;
+                                    document.getElementById("timer").textContent = (m < 10 ? "0":"") + m + ":" + (s<10?"0":"")+s;
+                                    if(secs <= 0) {
+                                        clearInterval(int);
+                                        alert("Session complete! Time to rest.");
+                                    }
+                                }, 1000);
+                            }
+                            function reset() {
+                                clearInterval(int); int = null;
+                                secs = 25 * 60;
+                                document.getElementById("timer").textContent = "25:00";
+                            }
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+            } else if (type === 'puzzle') {
+                appTitle = "🧩 15-Puzzle Game";
+                appContent = `
+                    <html>
+                    <body style="font-family:'Sora',sans-serif;background:#0d0a1e;color:#fff;padding:16px;text-align:center;">
+                        <h3>15-Puzzle</h3>
+                        <div id="grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:240px;margin:12px auto 0;"></div>
+                        <script>
+                            let tiles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+                            function render() {
+                                const grid = document.getElementById("grid");
+                                grid.innerHTML = "";
+                                tiles.forEach((t, i) => {
+                                    const tile = document.createElement("button");
+                                    tile.style.cssText = "aspect-ratio:1;background:#221840;border:1px solid #9b6dff;border-radius:8px;color:#fff;font-weight:bold;font-size:18px;";
+                                    if(t === 0) {
+                                        tile.style.background = "transparent";
+                                        tile.style.border = "none";
+                                    } else {
+                                        tile.textContent = t;
+                                        tile.onclick = () => move(i);
+                                    }
+                                    grid.appendChild(tile);
+                                });
+                            }
+                            function move(i) {
+                                const blank = tiles.indexOf(0);
+                                const diff = Math.abs(blank - i);
+                                if(diff === 1 || diff === 4) {
+                                    tiles[blank] = tiles[i];
+                                    tiles[i] = 0;
+                                    render();
+                                }
+                            }
+                            render();
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+            }
+
+            title.textContent = appTitle;
+            iframe.srcdoc = appContent;
+            container.style.display = "flex";
+        }
+
+        function closeSubAppFrame() {
+            const container = document.getElementById("subAppFrameContainer");
+            const iframe = document.getElementById("subAppIframe");
+            container.style.display = "none";
+            iframe.srcdoc = "";
+        }
+
+        // ================= CUSTOM APP CREATOR LOGIC =================
+        function saveCustomApp() {
+            const name = document.getElementById("customAppName").value.trim();
+            const source = document.getElementById("customAppEditor").value.trim();
+            
+            if(!name || !source) {
+                alert("Please fill both App Name and Source Code.");
+                return;
+            }
+
+            const appObj = { id: Date.now(), name: name, source: source };
+            customSubApps.push(appObj);
+            localStorage.setItem("aegis_custom_subapps", JSON.stringify(customSubApps));
+            
+            document.getElementById("customAppName").value = "";
+            document.getElementById("customAppEditor").value = "";
+            
+            loadCustomApps();
+            alert("App saved successfully!");
+        }
+
+        function loadCustomApps() {
+            try {
+                customSubApps = JSON.parse(localStorage.getItem("aegis_custom_subapps") || "[]");
+            } catch(e) {
+                customSubApps = [];
+            }
+
+            const list = document.getElementById("customAppsList");
+            if(customSubApps.length === 0) {
+                list.innerHTML = "";
+                return;
+            }
+
+            let html = '<div class="section-title" style="margin-top:16px;">Your Custom Apps</div><div class="grid-list">';
+            customSubApps.forEach(app => {
+                html += `
+                    <div class="action-card" onclick="openCustomSubApp(${app.id})">
+                        <div class="action-icon" style="color: var(--p)"><i class="fa-solid fa-cube"></i></div>
+                        <div class="action-label">${app.name}</div>
+                        <span onclick="event.stopPropagation(); deleteCustomApp(${app.id})" style="color: var(--red); font-size:11px; margin-top:4px;">Delete</span>
+                    </div>
+                `;
+            });
+            html += "</div>";
+            list.innerHTML = html;
+        }
+
+        function openCustomSubApp(id) {
+            const app = customSubApps.find(a => a.id === id);
+            if (!app) return;
+            vibrateDevice(40);
+            const container = document.getElementById("subAppFrameContainer");
+            const iframe = document.getElementById("subAppIframe");
+            const title = document.getElementById("subAppFrameTitle");
+
+            title.textContent = app.name;
+            iframe.srcdoc = `
+                <html>
+                <head>
+                    <meta name="viewport" content="width=device-width,initial-scale=1">
+                    <style>
+                        body { font-family:'Sora',sans-serif; background:#0d0a1e; color:#fff; padding:16px; }
+                        h2, h3 { color: #9b6dff; }
+                        button { padding: 9px 18px; background: linear-gradient(135deg,#9b6dff,#4f8ef7); color:#fff; border:none; border-radius:8px; cursor:pointer; }
+                    </style>
+                </head>
+                <body>
+                    ${app.source}
+                </body>
+                </html>
+            `;
+            container.style.display = "flex";
+        }
+
+        function deleteCustomApp(id) {
+            customSubApps = customSubApps.filter(a => a.id !== id);
+            localStorage.setItem("aegis_custom_subapps", JSON.stringify(customSubApps));
+            loadCustomApps();
+        }
+
+        // ================= AUTOMATION RULES LOGIC =================
+        function saveAutomationRule() {
+            const ev = document.getElementById("autoEvent").value;
+            const act = document.getElementById("autoAction").value;
+            
+            const rule = { id: Date.now(), event: ev, action: act };
+            autoRules.push(rule);
+            localStorage.setItem("aegis_auto_rules", JSON.stringify(autoRules));
+            
+            loadAutomationRules();
+            alert("Automation rule added!");
+        }
+
+        function loadAutomationRules() {
+            try {
+                autoRules = JSON.parse(localStorage.getItem("aegis_auto_rules") || "[]");
+            } catch(e) {
+                autoRules = [];
+            }
+
+            const list = document.getElementById("activeRulesList");
+            if(autoRules.length === 0) {
+                list.innerHTML = '<p style="font-size: 12px; color: var(--txt3)">No active task rules configured.</p>';
+                return;
+            }
+
+            let html = "";
+            autoRules.forEach(rule => {
+                const eventText = {
+                    "battery_low": "🔋 Battery Low (&lt;20%)",
+                    "charger_connected": "🔌 Charger Connected",
+                    "boot": "📲 On Boot"
+                }[rule.event];
+
+                const actionText = {
+                    "speak_state": "🔊 Speak Alert State",
+                    "torch_on": "💡 Turn Flashlight ON",
+                    "launch_camera": "📷 Launch Camera",
+                    "vibrate_alert": "⚡ Vibrate device"
+                }[rule.action];
+
+                html += `
+                    <div class="action-card" style="flex-direction:row; justify-content:space-between; padding:12px 16px;">
+                        <div style="text-align: left;">
+                            <div style="font-size:12px; font-weight:700;">When: ${eventText}</div>
+                            <div style="font-size:11px; color: var(--txt2);">Action: ${actionText}</div>
+                        </div>
+                        <button onclick="deleteAutomationRule(${rule.id})" style="background:transparent; border:none; color:var(--red); font-size:14px; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+
+        function deleteAutomationRule(id) {
+            autoRules = autoRules.filter(r => r.id !== id);
+            localStorage.setItem("aegis_auto_rules", JSON.stringify(autoRules));
+            loadAutomationRules();
+        }
+
+        function checkAutomationRoutines(triggerName) {
+            // Evaluates rules based on speech prompts
+            autoRules.forEach(rule => {
+                if (triggerName.includes(rule.event.replace("_", " "))) {
+                    executeAutomationAction(rule.action);
+                }
+            });
+        }
+
+        function executeAutomationAction(action) {
+            if(action === 'speak_state') {
+                speakText("Aegis Automation Alert: trigger event condition satisfied.");
+            } else if(action === 'torch_on') {
+                setIsTorchOn(true);
+            } else if(action === 'launch_camera') {
+                launchPackageApp("com.android.camera2", "Camera");
+            } else if(action === 'vibrate_alert') {
+                vibrateDevice(500);
+            }
+        }
+
+        // ================= INSTALLED APPS LOGIC =================
+        function scanInstalledApps() {
+            if(window.app && window.app.GetInstalledApps) {
+                try {
+                    installedAppsList = JSON.parse(app.GetInstalledApps());
+                    displayInstalledApps(installedAppsList);
+                } catch(e) {
+                    document.getElementById("installedAppsGrid").innerHTML = '<p style="color:var(--red);">Failed scanning packages.</p>';
+                }
+            } else {
+                // Mock lists for non-native context
+                installedAppsList = [
+                    { name: "YouTube", package: "com.google.android.youtube" },
+                    { name: "WhatsApp", package: "com.whatsapp" },
+                    { name: "Settings", package: "com.android.settings" },
+                    { name: "Twitter", package: "com.twitter.android" },
+                    { name: "Camera", package: "com.android.camera2" }
+                ];
+                displayInstalledApps(installedAppsList);
+            }
+        }
+
+        function displayInstalledApps(listt) {
+            const grid = document.getElementById("installedAppsGrid");
+            if (listt.length === 0) {
+                grid.innerHTML = '<p style="color:var(--txt3);">No launchable apps found.</p>';
+                return;
+            }
+            grid.innerHTML = listt.map(app => `
+                <div class="action-card" onclick="launchPackageApp('${app.package}', '${app.name}')">
+                    <div class="action-icon"><i class="fa-solid fa-circle-play"></i></div>
+                    <div class="action-label" style="font-size:10px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; max-width:100%;">${app.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterInstalledApps(query) {
+            const filtered = installedAppsList.filter(app => app.name.toLowerCase().includes(query.toLowerCase()));
+            displayInstalledApps(filtered);
+        }
+
+        // ================= SETTINGS LOGIC =================
+        function onBrainModeChange() {
+            try {
+                const mode = document.getElementById("aegisBrainMode").value;
+                document.getElementById("ollamaConfigPanel").style.display = (mode === 'ollama') ? 'block' : 'none';
+                document.getElementById("customApiConfigPanel").style.display = (mode === 'custom_api') ? 'block' : 'none';
+            } catch(e){}
+        }
+
+        function loadSettings() {
+            try {
+                assistantName = localStorage.getItem("aegis_alias_name") || "Aegis";
+                brainMode = localStorage.getItem("aegis_brain_mode") || "pollinations";
+                ttsLanguage = localStorage.getItem("aegis_voice_lang") || "hinglish";
+                systemTheme = localStorage.getItem("aegis_theme") || "cosmic";
+
+                document.getElementById("aegisName").value = assistantName;
+                document.getElementById("aegisBrainMode").value = brainMode;
+                document.getElementById("aegisVoiceLang").value = ttsLanguage;
+
+                document.querySelector(".sb-name").textContent = assistantName;
+
+                // Load Ollama / API settings
+                const ollamaUrl = localStorage.getItem("aegis_ollama_url") || "http://10.0.2.2:11434";
+                const ollamaModel = localStorage.getItem("aegis_ollama_model") || "llama3";
+                const ollamaModelfile = localStorage.getItem("aegis_ollama_modelfile") || "# Aegis Siri Assistant Modelfile\nSYSTEM \"\"\"\nYou are Aegis, a highly advanced, ultra-responsive Siri-like AI assistant running on a native Android device.\nYou can execute tasks on the phone using dynamic tasker-style commands. If you want to execute an action, append the command exactly as:\n- To make a call: [[CALL:phone_number_or_name]]\n- To send SMS: [[SMS:phone_number_or_name|your message text]]\n- To toggle flashlight: [[LIGHT:ON]] or [[LIGHT:OFF]]\n- To open any application: [[OPEN:common_app_name]]\n- To show a notification: [[NOTIFY:Title|Body message]]\n- To set volume: [[VOLUME:media|50]]\nBe polite, natural, and friendly. Answer in the requested language (English or Hindi/Hinglish). Keep responses concise.\n\"\"\"";
+
+                const customApiEndpoint = localStorage.getItem("aegis_custom_api_endpoint") || "https://api.openai.com/v1/chat/completions";
+                const customApiHeaders = localStorage.getItem("aegis_custom_api_headers") || '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer YOUR_API_KEY"\n}';
+                const customApiBodyTemplate = localStorage.getItem("aegis_custom_api_body_template") || '{\n  "model": "gpt-3.5-turbo",\n  "messages": [\n    {\n      "role": "system",\n      "content": "SYSTEM_PROMPT"\n    },\n    {\n      "role": "user",\n      "content": "USER_PROMPT"\n    }\n  ]\n}';
+
+                document.getElementById("ollamaUrl").value = ollamaUrl;
+                document.getElementById("ollamaModel").value = ollamaModel;
+                document.getElementById("ollamaModelfile").value = ollamaModelfile;
+                document.getElementById("customApiEndpoint").value = customApiEndpoint;
+                document.getElementById("customApiHeaders").value = customApiHeaders;
+                document.getElementById("customApiBodyTemplate").value = customApiBodyTemplate;
+
+                onBrainModeChange();
+
+                // Sync visual theme
+                setAegisTheme(systemTheme, null);
+            } catch(e) {}
+        }
+
+        function updateAssistantSettings() {
+            try {
+                assistantName = document.getElementById("aegisName").value.trim() || "Aegis";
+                brainMode = document.getElementById("aegisBrainMode").value;
+                ttsLanguage = document.getElementById("aegisVoiceLang").value;
+
+                localStorage.setItem("aegis_alias_name", assistantName);
+                localStorage.setItem("aegis_brain_mode", brainMode);
+                localStorage.setItem("aegis_voice_lang", ttsLanguage);
+
+                localStorage.setItem("aegis_ollama_url", document.getElementById("ollamaUrl").value.trim());
+                localStorage.setItem("aegis_ollama_model", document.getElementById("ollamaModel").value.trim());
+                localStorage.setItem("aegis_ollama_modelfile", document.getElementById("ollamaModelfile").value);
+                localStorage.setItem("aegis_custom_api_endpoint", document.getElementById("customApiEndpoint").value.trim());
+                localStorage.setItem("aegis_custom_api_headers", document.getElementById("customApiHeaders").value);
+                localStorage.setItem("aegis_custom_api_body_template", document.getElementById("customApiBodyTemplate").value);
+
+                document.querySelector(".sb-name").textContent = assistantName;
+                J.toast("Settings updated!", "ok");
+            } catch(e) {}
+        }
+
+        function checkApiKeyStatus() {
+            const statusEl = document.getElementById("apiKeyStatus");
+            const geminiOpt = document.getElementById("geminiOption");
+            
+            if (window.app && window.app.IsGeminiKeyConfigured && app.IsGeminiKeyConfigured()) {
+                statusEl.textContent = "✅ Key Inject Successful";
+                statusEl.style.color = "var(--green)";
+            } else {
+                statusEl.textContent = "⚠️ Key Missing (Defaulting to Pollinations)";
+                statusEl.style.color = "var(--amber)";
+                if (brainMode === 'gemini') {
+                    brainMode = 'pollinations';
+                    document.getElementById("aegisBrainMode").value = 'pollinations';
+                }
+            }
+        }
+
+        // Theme management
+        function setAegisTheme(themeName, el) {
+            document.body.className = ""; // clear themes
+            if (themeName !== 'cosmic') {
+                document.body.classList.add(`theme-${themeName}`);
+            }
+            systemTheme = themeName;
+            localStorage.setItem("aegis_theme", themeName);
+
+            // Sync visual active class on picker
+            if (el) {
+                document.querySelectorAll(".theme-color-op").forEach(op => op.classList.remove("active"));
+                el.classList.add("active");
+            } else {
+                const colors = { cosmic: 0, ocean: 1, midnight: 2, forest: 3, rose: 4 };
+                const pickerOps = document.querySelectorAll(".theme-color-op");
+                if (pickerOps[colors[themeName]]) {
+                    pickerOps.forEach(op => op.classList.remove("active"));
+                    pickerOps[colors[themeName]].classList.add("active");
+                }
+            }
+        }
+
+        // Generic J helper simulator
+        window.J = {
+            toast: function(msg, type) {
+                if(window.app && window.app.ShowTaskerNotification) {
+                    app.ShowTaskerNotification("Aegis Alert", msg);
+                } else {
+                    alert(msg);
+                }
+            }
+        };
+
+    </script>
+</body>
+</html>
